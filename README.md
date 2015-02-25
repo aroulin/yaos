@@ -1,8 +1,13 @@
-# yaos
-Yet Another Operating System
+# YAOS
+*YAOS* (standing for *Yet Another Operating System*) is a kernel built from scratch. 
 
 ## Goal
 Implement a simple & portable kernel
+
+## Philosophy
+- Avoid tutorials, do the work yourself.
+- Understand the internals.
+- Keep It Simple Stupid.
 
 ## Steps
 1. Hello World bootsector
