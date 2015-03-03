@@ -7,11 +7,17 @@ else
 
 hdd.img: boot.S
 	as $< -o boot.o
-	objcopy -O binary boot.o $@
+	ld -Ttext 0x7c00 boot.o -o boot.out
+	ld --oformat binary -Ttext 0x7c00 boot.o -o hdd.img
 endif
 
-qemu:
+qemu: hdd.img
 	qemu-system-i386 -hda hdd.img
 
+dbg: hdd.img
+	qemu-system-i386 -hda hdd.img -S -s
+
 clean:
-	rm -rf boot.o hdd.img
+	rm -rf boot.o hdd.img boot.out
+
+.PHONY: qemu dbg clean
