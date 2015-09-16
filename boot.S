@@ -29,11 +29,11 @@ setup:
 
 # Hello World through BIOS interrupts
 hello_world:
-	movb ah, 0x0e		# Function no 0x0e is print a char
+	mov ah, 0x0e		# Function no 0x0e is print a char
 	mov  si, offset str_hw
 loop:
 	lodsb
-	cmpb al, 0
+	cmp al, 0
 	jz halt
 	int 0x10
 	jmp loop
