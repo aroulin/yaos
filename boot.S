@@ -1,27 +1,38 @@
+.intel_syntax noprefix
+
 .code16				/* 16-bit real-mode code here */
 .text
 
+.equ REAL_MODE_SP, 0x7000
+
 .global _start
 _start:
-	jmp $0,$setup
+	cli
+	jmp 0,setup
 setup:
-	/* Zero the segment registers */
-	xor %ax, %ax
-	mov %ax, %ds
-	mov %ax, %es
-	mov %ax, %fs
-	mov %ax, %gs
-	mov %ax, %ss
+	# Zero the segment registers
+	xor ax, ax
+	mov ds, ax 
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
 
-/* Hello World through BIOS interrupts. */
+	# Setup stack
+	mov sp, REAL_MODE_SP
+
+	# Enable back interrupts
+	sti
+
+# Hello World through BIOS interrupts
 hello_world:
-	movb $0x0e, %ah		/* Function no 0x0e is print a char. */
-	mov $str_hw, %si
+	movb ah, 0x0e		# Function no 0x0e is print a char
+	mov  si, offset str_hw
 loop:
 	lodsb
-	cmpb $0, %al
+	cmpb al, 0
 	jz halt
-	int $0x10
+	int 0x10
 	jmp loop
 
 halt:
@@ -30,6 +41,6 @@ halt:
 str_hw:
 	.asciz "Hello World!"
 
-	.=510			/* MBR Magic Number */
+	.=510			# MBR Magic Number
 	.byte 0x55
 	.byte 0xAA
