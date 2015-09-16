@@ -4,6 +4,7 @@
 .text
 
 .equ REAL_MODE_SP, 0x7000
+.equ BOOT1_START, 0x1000
 
 .global _start
 _start:
@@ -24,23 +25,61 @@ setup:
 	# Enable back interrupts
 	sti
 
-# Hello World through BIOS interrupts
-hello_world:
-	movb ah, 0x0e		# Function no 0x0e is print a char
-	mov  si, offset str_hw
-loop:
+	# Save drive number
+	mov [drive_number], dl
+
+	# Reset disk drive
+	mov ah, 0
+	int 0x13
+	jc print_error
+	mov si, offset str_disk_reset
+	call print
+
+	# Read boot1 in the next 17 sectors
+	mov ah, 2
+	mov al, 17
+	mov ch, 0
+	mov cl, 2
+	mov dh, 0
+	mov bx, BOOT1_START
+	int 0x13
+	jc print_error
+	cmp al, 17
+	jne print_error
+
+	jmp halt
+
+print:
+	mov ah, 0x0e # Function no 0x0e is print a char
+print_loop:
 	lodsb
-	cmpb al, 0
-	jz halt
+	cmp al, 0
+	jz print_end
 	int 0x10
-	jmp loop
+	jmp print_loop
+print_end:
+	ret
+
+# Hello World through BIOS interrupts
+print_error:
+	mov  si, offset str_error
+	call print
+	jmp halt
 
 halt:
 	jmp .
 
-str_hw:
-	.asciz "Hello World!"
+str_disk_reset:
+	.asciz "Disk resetted successfully"
+
+str_error:
+	.asciz "Error :("
+
+drive_number:
+	.byte 0
 
 	.=510			# MBR Magic Number
 	.byte 0x55
 	.byte 0xAA
+
+	.=18*512

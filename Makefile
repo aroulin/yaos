@@ -17,7 +17,10 @@ qemu: hdd.img
 dbg: hdd.img
 	qemu-system-i386 -hda hdd.img -S -s
 
+disassemble:
+	objdump -m i8086 -M intel -D boot.out
+
 clean:
 	rm -rf boot.o hdd.img boot.out
 
-.PHONY: qemu dbg clean
+.PHONY: qemu dbg disassemble clean
