@@ -31,21 +31,33 @@ setup:
 	mov ah, 0
 	int 0x13
 	jc print_error
+
+	mov si, offset str_disk_reset
+	call print
 	jmp halt
+
+print:
+	mov ah, 0x0e # Function no 0x0e is print a char
+print_loop:
+	lodsb
+	cmp al, 0
+	jz print_end
+	int 0x10
+	jmp print_loop
+print_end:
+	ret
 
 # Hello World through BIOS interrupts
 print_error:
-	mov ah, 0x0e		# Function no 0x0e is print a char
 	mov  si, offset str_error
-loop:
-	lodsb
-	cmp al, 0
-	jz halt
-	int 0x10
-	jmp loop
+	call print
+	jmp halt
 
 halt:
 	jmp .
+
+str_disk_reset:
+	.asciz "Disk resetted successfully"
 
 str_error:
 	.asciz "Error :("
