@@ -24,6 +24,9 @@ setup:
 	# Enable back interrupts
 	sti
 
+	# Save drive number
+	mov [drive_number], dl
+
 # Hello World through BIOS interrupts
 hello_world:
 	movb ah, 0x0e		# Function no 0x0e is print a char
@@ -40,6 +43,9 @@ halt:
 
 str_hw:
 	.asciz "Hello World!"
+
+drive_number:
+	.byte 0
 
 	.=510			# MBR Magic Number
 	.byte 0x55
