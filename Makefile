@@ -15,7 +15,8 @@ qemu: hdd.img
 	qemu-system-i386 -hda hdd.img
 
 dbg: hdd.img
-	qemu-system-i386 -hda hdd.img -S -s
+	qemu-system-i386 -hda hdd.img -S -s &
+	gdb
 
 disassemble:
 	objdump -m i8086 -M intel -D boot.out
