@@ -1,7 +1,7 @@
 .intel_syntax noprefix
 .code16
-.global _boot1_start
-_boot1_start:
+.global _start
+_start:
 	mov si, offset msg
 	call print
 	jmp .
