@@ -18,4 +18,4 @@ print_loop:
 	jmp print_loop
 print_end:
 	ret
-.=512*17
+	.=512*17

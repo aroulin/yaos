@@ -48,6 +48,7 @@ setup:
 	jne print_error
 
 	jmp BOOT1_START
+
 print:
 	mov ah, 0x0e # Function no 0x0e is print a char
 print_loop:
