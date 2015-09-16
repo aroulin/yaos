@@ -12,10 +12,10 @@
 num2string:
 	pusha
 
-	xor dx, dx
 	xor cx, cx
-	
+
 num2string_loop:
+	xor dx, dx
 	div bx # now ax = num/base and dx = num % base
 
 	cmp dl, 9
@@ -24,6 +24,7 @@ num2string_loop:
 	jmp num2string_store
 
 num2string_A_off:
+	sub dl, 10
 	add dl, 'A'
 
 num2string_store:
@@ -32,24 +33,24 @@ num2string_store:
 	inc cx
 
 	cmp ax, 0
-	jmp num2string_loop
+	jnz num2string_loop
 
-	mov [di], 0
+	xor bx, bx
+	mov [di], bx
 
 	# now we just have to reverse the buffer
-	mov bx, di
-	sub bx, cx
-	
+	mov bx, di # bx = base + strlen
+	sub bx, cx # bx = base
+
 num2string_rev_loop:
-	mov al, [di - cx]
+	mov al, [bx]
 	mov ah, [di - 1]
 	xchg al, ah
-	mov [di - cx], al
+	mov [bx], al
 	mov [di - 1], ah
 
 	dec di
 	inc bx
-	dec cx
 
 	cmp di, bx
 	ja num2string_rev_loop
