@@ -1,4 +1,3 @@
-
 .intel_syntax
 .code16
 
