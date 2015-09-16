@@ -47,8 +47,7 @@ setup:
 	cmp al, 17
 	jne print_error
 
-	jmp halt
-
+	jmp BOOT1_START
 print:
 	mov ah, 0x0e # Function no 0x0e is print a char
 print_loop:
@@ -70,7 +69,7 @@ halt:
 	jmp .
 
 str_disk_reset:
-	.asciz "Disk resetted successfully"
+	.asciz "Disk resetted successfully\r\n"
 
 str_error:
 	.asciz "Error :("
@@ -81,5 +80,3 @@ drive_number:
 	.=510			# MBR Magic Number
 	.byte 0x55
 	.byte 0xAA
-
-	.=18*512

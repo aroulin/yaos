@@ -1,15 +1,9 @@
-ifeq ($(shell uname), Darwin)
 
-hdd.img: boot.S
-	as $< -arch i386 -o boot.o
-	gobjcopy -O binary boot.o $@
-else
+hdd.img: boot.sub
+	cp boot/boot.bin hdd.img
 
-hdd.img: boot.S
-	as $< -o boot.o
-	ld -Ttext 0x7c00 boot.o -o boot.out
-	ld --oformat binary -Ttext 0x7c00 boot.o -o hdd.img
-endif
+%.sub:
+	$(MAKE) -C $*
 
 qemu: hdd.img
 	qemu-system-i386 -hda hdd.img
@@ -19,9 +13,10 @@ dbg: hdd.img
 	gdb
 
 disassemble:
-	objdump -m i8086 -M intel -D boot.out
+	objdump -m i8086 -M intel -b binary -D hdd.img
 
-clean:
-	rm -rf boot.o hdd.img boot.out
+clean:	
+	$(MAKE) -C boot clean
+	rm -rf hdd.img *~
 
 .PHONY: qemu dbg disassemble clean
