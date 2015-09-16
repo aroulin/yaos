@@ -27,10 +27,16 @@ setup:
 	# Save drive number
 	mov [drive_number], dl
 
+	# Reset disk drive
+	mov ah, 0
+	int 0x13
+	jc print_error
+	jmp halt
+
 # Hello World through BIOS interrupts
-hello_world:
+print_error:
 	mov ah, 0x0e		# Function no 0x0e is print a char
-	mov  si, offset str_hw
+	mov  si, offset str_error
 loop:
 	lodsb
 	cmp al, 0
@@ -41,8 +47,8 @@ loop:
 halt:
 	jmp .
 
-str_hw:
-	.asciz "Hello World!"
+str_error:
+	.asciz "Error :("
 
 drive_number:
 	.byte 0
