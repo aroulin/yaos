@@ -1,7 +1,5 @@
-.intel_syntax
+.intel_syntax noprefix
 .code16
-
-
 
 .globl num2string
 
