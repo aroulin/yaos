@@ -1,5 +1,4 @@
-
-hdd.img: boot.sub
+hdd.img: lib.sub boot.sub
 	cp boot/boot.bin hdd.img
 
 %.sub:
@@ -15,8 +14,9 @@ dbg: hdd.img
 disassemble:
 	objdump -m i8086 -M intel -b binary -D hdd.img
 
-clean:	
+clean:
 	$(MAKE) -C boot clean
+	$(MAKE) -C lib clean
 	rm -rf hdd.img *~
 
 .PHONY: qemu dbg disassemble clean
