@@ -12,7 +12,7 @@ dbg: hdd.img
 	gdb
 
 disassemble:
-	objdump -m i8086 -M intel -b binary -D hdd.img
+	objdump -m i8086 -b binary -D hdd.img
 
 clean:
 	$(MAKE) -C boot clean

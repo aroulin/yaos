@@ -1,6 +1,4 @@
-.intel_syntax noprefix
-
-.code16				/* 16-bit real-mode code here */
+.code16 # 16-bit real-mode code here
 .text
 
 .equ REAL_MODE_SP, 0x7000
@@ -8,76 +6,76 @@
 
 .global _start
 _start:
-	cli
-	jmp 0,setup
+    cli
+    ljmp $0, $setup
 setup:
-	# Zero the segment registers
-	xor ax, ax
-	mov ds, ax 
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	mov ss, ax
+    # Zero the segment registers
+    xor %ax, %ax
+    mov %ax, %ds 
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %ax, %ss
 
-	# Setup stack
-	mov sp, REAL_MODE_SP
+    # Setup stack
+    mov $REAL_MODE_SP, %sp
 
-	# Enable back interrupts
-	sti
+    # Enable back interrupts
+    sti
 
-	# Save drive number
-	mov [drive_number], dl
+    # Save drive number
+    mov %dl, drive_number
 
-	# Reset disk drive
-	mov ah, 0
-	int 0x13
-	jc print_error
-	mov si, offset str_disk_reset
-	call print
+    # Reset disk drive
+    mov $0, %ah
+    int $0x13
+    jc print_error
+    mov $str_disk_reset, %si
+    call print
 
-	# Read boot1 in the next 17 sectors
-	mov ah, 2
-	mov al, 17
-	mov ch, 0
-	mov cl, 2
-	mov dh, 0
-	mov bx, BOOT1_START
-	int 0x13
-	jc print_error
-	cmp al, 17
-	jne print_error
+    # Read boot1 in the next 17 sectors
+    mov $2, %ah
+    mov $17, %al
+    mov $0, %ch
+    mov $2, %cl
+    mov $0, %dh
+    mov $BOOT1_START, %bx
+    int $0x13
+    jc print_error
+    cmp $17, %al
+    jne print_error
 
-	jmp BOOT1_START
+    jmp BOOT1_START
 
 print:
-	mov ah, 0x0e # Function no 0x0e is print a char
+    mov $0x0e, %ah # Function no 0x0e is print a char
 print_loop:
-	lodsb
-	cmp al, 0
-	jz print_end
-	int 0x10
-	jmp print_loop
+    lodsb
+    cmp $0, %al
+    jz print_end
+    int $0x10
+    jmp print_loop
 print_end:
-	ret
+    ret
 
 # Hello World through BIOS interrupts
 print_error:
-	mov  si, offset str_error
-	call print
-	jmp halt
+    mov str_error, %si
+    call print
+    jmp halt
 
 halt:
-	jmp .
+    jmp .
 
 str_disk_reset:
-	.asciz "Disk resetted successfully\r\n"
+    .asciz "Disk resetted successfully\r\n"
 
 str_error:
-	.asciz "Error :("
+    .asciz "Error :("
 
 drive_number:
-	.byte 0
+    .byte 0
 
-	.=510			# MBR Magic Number
-	.byte 0x55
-	.byte 0xAA
+    .=510 # MBR Magic Number
+    .byte 0x55
+    .byte 0xAA
