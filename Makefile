@@ -1,4 +1,6 @@
-hdd.img: lib.sub boot.sub
+LEVEL = .
+
+hdd.img: boot.sub
 	cp boot/boot.bin hdd.img
 
 %.sub:
@@ -20,3 +22,5 @@ clean:
 	rm -rf hdd.img *~
 
 .PHONY: qemu dbg disassemble clean
+
+include $(LEVEL)/Makefile.rules

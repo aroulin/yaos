@@ -1,3 +1,5 @@
+LEVEL = ..
+
 all: librealmode.a libstring.a
 
 lib%.a:
@@ -8,3 +10,5 @@ clean:
 	$(MAKE) -C realmode clean
 	$(MAKE) -C string clean
 	rm -rf *.a
+
+include $(LEVEL)/Makefile.rules

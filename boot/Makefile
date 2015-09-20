@@ -4,8 +4,8 @@ boot.bin: boot0.bin boot1.bin
 	cat boot0.bin boot1.bin > boot.bin
 boot0.bin: boot0.o
 	ld --oformat binary -Ttext 0x7c00 boot0.o -o boot0.bin
-boot1.bin: boot1.o
-	ld --oformat binary -Ttext 0x1000 boot1.o -L$(LEVEL)/lib -lrealmode -o boot1.bin
+boot1.bin: boot1.o  librealmode.a
+	ld --oformat binary -Ttext 0x1000 boot1.o -L. -lrealmode -o boot1.bin
 	truncate -s 8704 boot1.bin
 disassemble: boot0.o boot1.o
 	ld -Ttext 0x7c00 boot0.o -o boot0.out
@@ -14,4 +14,6 @@ disassemble: boot0.o boot1.o
 	objdump -m i8086 -M intel -D boot1.out
 
 clean:
-	rm -rf *.o *.bin *~ *.out
+	rm -rf *.o *.bin *~ *.out *.a
+
+include $(LEVEL)/Makefile.rules
