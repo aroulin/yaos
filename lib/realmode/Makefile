@@ -1,6 +1,6 @@
 LEVEL = ../..
 
-librealmode.a: bios.o
+librealmode.a: bios.o a20-gate.o
 	ar rcs $@ $^
 
 clean:
