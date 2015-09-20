@@ -1,3 +1,2 @@
 %.a:
 	make -C $(LEVEL)/lib $@
-	cp $(LEVEL)/lib/$@ .

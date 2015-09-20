@@ -2,9 +2,11 @@ LEVEL = ..
 
 all: librealmode.a libstring.a
 
-lib%.a:
+lib%.a: FORCE_RUN
 	$(MAKE) -C $*
 	cp $*/lib$*.a .
+
+FORCE_RUN:
 
 clean:
 	$(MAKE) -C realmode clean
