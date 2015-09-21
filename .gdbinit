@@ -1,5 +1,4 @@
-set architecture i8086
-b *0x7c00
+set architecture i386:x86-64
 target remote localhost:1234
 c
 layout asm
