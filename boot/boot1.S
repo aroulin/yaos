@@ -92,7 +92,7 @@ protected_mode:
 
     # Reload CS descriptor cache
     lgdt GDTR64
-    pushw $0x10
+    pushl $0x10
     mov $long_mode_cs_reloaded, %eax
     push %eax
     lret
