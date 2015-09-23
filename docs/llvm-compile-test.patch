@@ -1,0 +1,25 @@
+From e49c4fd918515609d2f67b2bbaf2fa878f8a4cba Mon Sep 17 00:00:00 2001
+From: aroulin <andy.roulin@epfl.ch>
+Date: Tue, 22 Sep 2015 22:33:47 +0200
+Subject: [PATCH] LLVM Compile Test
+
+---
+ Makefile.rules | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Makefile.rules b/Makefile.rules
+index e6c173e..755a873 100644
+--- a/Makefile.rules
++++ b/Makefile.rules
+@@ -1,2 +1,8 @@
+ %.a:
+ 	make -C $(LEVEL)/lib $@
++
++CC=clang
++
++%.o: %.S
++	$(CC) -E $< -o $*.s~
++	llvm-mc -filetype=obj $*.s~ -o $@
+-- 
+1.9.1
+
