@@ -1,4 +1,1 @@
-%.a:
-	make -C $(LEVEL)/lib $@
-
 CXXFLAGS = -m64 -std=c++11 -ffreestanding -fno-exceptions -fno-rtti -I$(LEVEL)/include
