@@ -1,6 +1,6 @@
 LEVEL = ../..
 
-io.a: terminal.o
+x64.a: idt.o
 	ar rcs $@ $^
 
 clean:
