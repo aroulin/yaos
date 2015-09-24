@@ -92,20 +92,17 @@ protected_mode:
 
     # Reload CS descriptor cache
     lgdt GDTR64
-    pushw $0x10
+    pushl $0x10
     mov $long_mode_cs_reloaded, %eax
     push %eax
     lret
 
 long_mode_cs_reloaded:
 .code64
-        xor %rax, %rax
-
-debugger_wait_loop:
-    cmp $0, %rax
-    je debugger_wait_loop
-
-    jmp .
+    sti
+    call boot1_main
+    cli
+    hlt
 
 a20_gate_enabled_str:
     .asciz "A20 gate is enabled\r\n"
