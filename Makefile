@@ -18,7 +18,9 @@ disassemble:
 clean:
 	$(MAKE) -C boot clean
 	$(MAKE) -C lib clean
+	$(MAKE) -C tests clean
 	rm -rf hdd.img *~
+
 test:
 	$(MAKE) -C tests
 	./tests/test

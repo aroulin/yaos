@@ -5,7 +5,7 @@ CXXFLAGS = -I../include -I.
 
 test: $(TESTS_OBJ)
 
-%.o:
+%.o: %.cpp
 	$(eval PREFIX := $(notdir $(patsubst %_test, %, $(basename $*))))
 	$(eval LIB_PATH := $(dir $(shell find .. -name $(PREFIX).cpp)))
 	$(MAKE) -C $(LIB_PATH)
