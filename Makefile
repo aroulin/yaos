@@ -19,6 +19,9 @@ clean:
 	$(MAKE) -C boot clean
 	$(MAKE) -C lib clean
 	rm -rf hdd.img *~
+test:
+	$(MAKE) -C tests
+	./tests/test
 
 .PHONY: qemu dbg disassemble clean
 
