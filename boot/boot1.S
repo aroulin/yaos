@@ -171,7 +171,8 @@ long_mode_cs_reloaded:
     lidt IDTR64
 
     sti
-    int $0
+    xor %rax, %rax
+    div %rax
     call boot1_main
     cli
     hlt
@@ -272,4 +273,5 @@ GP_WOW:
 IDT64_end:
 
 I_AM_DIV_HANDLER:
+    mov $1, %rax # god helps you not to div by 0
     iretq
