@@ -155,6 +155,11 @@ protected_mode:
 
 long_mode_cs_reloaded:
 .code64
+
+    # Zero data segment
+    xor %ax, %ax
+    mov %ax, %ds
+
     sti
     call boot1_main
     cli
