@@ -197,6 +197,6 @@ GDTR64:
     .quad GDT64                #base
 GDT64:
     .quad 0x0000000000000000  #null segment descriptor
-    .quad 0x00BF92000000FFFF  #data segment descriptor
+    .quad 0x009F92000000FFFF  #data segment descriptor
     .quad 0x00BF9A000000FFFF  #code segment descriptor
 GDT_end64:
