@@ -160,6 +160,10 @@ long_mode_cs_reloaded:
     xor %ax, %ax
     mov %ax, %ds
 
+    # Setup 64-bit TSS
+    mov $TSS64, %rax
+    mov %ax, GDT64+26
+
     sti
     call boot1_main
     cli
@@ -199,4 +203,23 @@ GDT64:
     .quad 0x0000000000000000  #null segment descriptor
     .quad 0x009F92000000FFFF  #data segment descriptor
     .quad 0x00BF9A000000FFFF  #code segment descriptor
+    .quad 0x0000890000000000 + TSS_LIMIT # TSS low
+    .quad 0x0000000000000000  # TSS descriptor (high)
 GDT_end64:
+
+TSS_LIMIT = TSS_end64 - TSS64 - 1;
+
+TSS64:
+    .long 0 # reserved
+    .quad 0xDEADBEEFDEADBEA0 # RSP0
+    .quad 0xDEADBEEFDEADBEA1 # RSP1
+    .quad 0xDEADBEEFDEADBEA2 # RSP2
+    .quad 0 # reserved
+    .quad 0xDEADBEEFDEADBEB1 # IST1
+    .quad 0xDEADBEEFDEADBEB2 # IST2
+    .quad 0xDEADBEEFDEADBEB3 # IST3
+    .quad 0xDEADBEEFDEADBEB4 # IST4
+    .quad 0xDEADBEEFDEADBEB5 # IST5
+    .quad 0xDEADBEEFDEADBEB6 # IST6
+    .quad 0xDEADBEEFDEADBEB7 # IST7
+TSS_end64:
