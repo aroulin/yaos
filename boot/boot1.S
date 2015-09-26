@@ -165,7 +165,12 @@ long_mode_cs_reloaded:
     mov %ax, GDT64+26
     ltr TSSR64
 
+    # I DONT KNOW WHAT IM DOIN
+    movw $I_AM_DIV_HANDLER, IDT64
+    lidt IDTR64
+
     sti
+    int $0
     call boot1_main
     cli
     hlt
@@ -228,3 +233,15 @@ TSS64:
     .quad 0xDEADBEEFDEADBEB7 # IST7
     .quad 0x0 # reserved
 TSS_end64:
+
+IDTR64:
+    .word IDT64_end - IDT64 - 1 #limit
+    .quad IDT64                #base
+
+IDT64:
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+IDT64_end:
+
+I_AM_DIV_HANDLER:
+    jmp .
