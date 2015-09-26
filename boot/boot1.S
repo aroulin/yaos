@@ -163,6 +163,7 @@ long_mode_cs_reloaded:
     # Setup 64-bit TSS
     mov $TSS64, %rax
     mov %ax, GDT64+26
+    ltr TSSR64
 
     sti
     call boot1_main
@@ -209,9 +210,12 @@ GDT_end64:
 
 TSS_LIMIT = TSS_end64 - TSS64 - 1;
 
+TSSR64:
+    .word 3 << 3
+
 TSS64:
     .long 0 # reserved
-    .quad 0xDEADBEEFDEADBEA0 # RSP0
+    .quad 0xCAFEBABECAFEBABE # RSP0
     .quad 0xDEADBEEFDEADBEA1 # RSP1
     .quad 0xDEADBEEFDEADBEA2 # RSP2
     .quad 0 # reserved
@@ -222,4 +226,5 @@ TSS64:
     .quad 0xDEADBEEFDEADBEB5 # IST5
     .quad 0xDEADBEEFDEADBEB6 # IST6
     .quad 0xDEADBEEFDEADBEB7 # IST7
+    .quad 0x0 # reserved
 TSS_end64:
