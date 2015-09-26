@@ -167,6 +167,7 @@ long_mode_cs_reloaded:
 
     # I DONT KNOW WHAT IM DOIN
     movw $I_AM_DIV_HANDLER, IDT64
+    movw $I_AM_DIV_HANDLER, GP_WOW
     lidt IDTR64
 
     sti
@@ -241,7 +242,34 @@ IDTR64:
 IDT64:
     .quad 0x00008F0000100000  # wow much div by 0
     .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
+GP_WOW:
+    .quad 0x00008F0000100000  # wow much div by 0
+    .quad 0 # very such useless offset
 IDT64_end:
 
 I_AM_DIV_HANDLER:
-    jmp .
+    iretq
