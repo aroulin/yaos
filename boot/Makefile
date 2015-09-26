@@ -4,8 +4,8 @@ boot.bin: boot0.bin boot1.bin
 	cat boot0.bin boot1.bin > boot.bin
 boot0.bin: boot0.o
 	ld --oformat binary -Ttext 0x7c00 boot0.o -o boot0.bin
-boot1.bin: boot1.o boot1_main.o librealmode.a
-	ld --oformat binary -Ttext 0x1000 boot1.o boot1_main.o -L$(LEVEL)/lib -lrealmode -o boot1.bin
+boot1.bin: boot1.o boot1_main.o $(LEVEL)/lib/realmode/librealmode.a
+	ld --oformat binary -Ttext 0x1000 $^ -o boot1.bin
 	truncate -s 8704 boot1.bin
 disassemble: boot0.o boot1.o
 	ld -Ttext 0x7c00 boot0.o -o boot0.out

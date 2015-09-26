@@ -1,10 +1,11 @@
 LEVEL = .
 
-hdd.img: boot.sub
+hdd.img: lib
+	$(MAKE) -C boot
 	cp boot/boot.bin hdd.img
 
-%.sub:
-	$(MAKE) -C $*
+lib:
+	$(MAKE) -C lib
 
 qemu: hdd.img
 	qemu-system-x86_64 -hda hdd.img
@@ -21,10 +22,10 @@ clean:
 	$(MAKE) -C tests clean
 	rm -rf hdd.img *~
 
-test:
+test: lib
 	$(MAKE) -C tests
 	./tests/test
 
-.PHONY: qemu dbg disassemble clean
+.PHONY: lib qemu dbg disassemble clean
 
 include $(LEVEL)/Makefile.rules
