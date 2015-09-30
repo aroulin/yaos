@@ -12,7 +12,7 @@ Implement a simple & portable kernel
 ## Steps
 1. Hello World bootsector
 2. Load kernel from disk (bootloader)
-3. Enter protected mode
+3. Enter protected mode and then long mode
 4. Drivers for simple peripherals
   * screen
   * keyboard
