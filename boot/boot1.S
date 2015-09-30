@@ -45,6 +45,35 @@ low_mem_ok:
     mov $kb_suffix_str, %si
     call bios_print
 
+    # Check available high memory
+    call high_mem_size
+    cmpw $100, %ax
+    jae high_mem_ok
+
+high_mem_error:
+    mov $high_mem_error_str, %si
+    call bios_print
+    mov $10, %bx
+    mov $low_mem_error_str, %di
+    mov %di, %si
+    call num2string
+    call bios_print
+    mov $mb_suffix_str, %si
+    call bios_print
+    cli
+    hlt
+
+high_mem_ok:
+    mov $high_mem_ok_str, %si
+    call bios_print
+    mov $10, %bx
+    mov $low_mem_ok_str, %di
+    mov %di, %si
+    call num2string
+    call bios_print
+    mov $mb_suffix_str, %si
+    call bios_print
+
 goodbye_damn_realmode:
     cli
 
@@ -140,8 +169,14 @@ low_mem_ok_str:
     .asciz "Low memory: "
 low_mem_error_str:
     .asciz "Not enough low memory: "
+high_mem_ok_str:
+    .asciz "High memory: "
+high_mem_error_str:
+    .asciz "Not enough high memory: "
 kb_suffix_str:
     .asciz "KB\r\n"
+mb_suffix_str:
+    .asciz "MB\r\n"
 
 GDTR:
     .word GDT_end - GDT - 1 #limit
