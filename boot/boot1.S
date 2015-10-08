@@ -18,6 +18,62 @@ a20_gate_enabled:
     mov $a20_gate_enabled_str, %si
     call bios_print
 
+    # Check that there is 640KB of low memory
+    call low_mem_size
+    cmpw $640, %ax
+    je low_mem_ok
+
+low_mem_error:
+    mov $low_mem_error_str, %si
+    call bios_print
+    mov %si, %di
+    mov $10, %bx
+    call num2string
+    call bios_print
+    mov $kb_suffix_str, %si
+    call bios_print
+    cli
+    hlt
+
+low_mem_ok:
+    mov $low_mem_ok_str, %si
+    call bios_print
+    mov $10, %bx
+    mov %si, %di
+    call num2string
+    call bios_print
+    mov $kb_suffix_str, %si
+    call bios_print
+
+    # Check available high memory
+    call high_mem_size
+    cmpw $100, %ax
+    jae high_mem_ok
+
+high_mem_error:
+    mov $high_mem_error_str, %si
+    call bios_print
+    mov $10, %bx
+    mov $low_mem_error_str, %di
+    mov %di, %si
+    call num2string
+    call bios_print
+    mov $mb_suffix_str, %si
+    call bios_print
+    cli
+    hlt
+
+high_mem_ok:
+    mov $high_mem_ok_str, %si
+    call bios_print
+    mov $10, %bx
+    mov $low_mem_ok_str, %di
+    mov %di, %si
+    call num2string
+    call bios_print
+    mov $mb_suffix_str, %si
+    call bios_print
+
 goodbye_damn_realmode:
     cli
 
@@ -108,6 +164,20 @@ a20_gate_enabled_str:
     .asciz "A20 gate is enabled\r\n"
 a20_gate_disabled_str:
     .asciz "A20 gate is disabled\r\n"
+
+low_mem_ok_str:
+    .asciz "Low memory: "
+low_mem_error_str:
+    .asciz "Not enough low memory: "
+high_mem_ok_str:
+    .asciz "High memory: "
+high_mem_error_str:
+    .asciz "Not enough high memory: "
+kb_suffix_str:
+    .asciz "KB\r\n"
+mb_suffix_str:
+    .asciz "MB\r\n"
+
 GDTR:
     .word GDT_end - GDT - 1 #limit
     .long GDT                #base

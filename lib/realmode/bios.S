@@ -3,6 +3,7 @@
 .global bios_print
 
 bios_print:
+    pusha
     mov $0x0e, %ah
 bios_print_loop:
     lodsb
@@ -11,4 +12,5 @@ bios_print_loop:
     int $0x10
     jmp bios_print_loop
 bios_print_end:
+    popa
     ret
