@@ -45,6 +45,8 @@ setup:
     cmp $17, %al
     jne print_error
 
+    mov $str_disk_boot1_loaded, %si
+    call print
     jmp BOOT1_START
 
 print:
@@ -70,8 +72,11 @@ halt:
 str_disk_reset:
     .asciz "Disk resetted successfully\r\n"
 
+str_disk_boot1_loaded:
+    .asciz "boot1 loaded from disk\r\n"
+
 str_error:
-    .asciz "Error :("
+    .asciz "Error in boot0 :("
 
 drive_number:
     .byte 0

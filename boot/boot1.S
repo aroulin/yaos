@@ -5,6 +5,8 @@
 
 .global _start
 _start:
+    mov $boot1_start_str, %si
+    call bios_print
     call a20_gate_is_enabled
     cmp $1, %ax
     je a20_gate_enabled
@@ -80,6 +82,7 @@ goodbye_damn_realmode:
     # load the GDT
     lgdt (GDTR)
 
+    # Set PE (Protection Enable) bit
     mov %cr0, %eax
     or $1, %eax
     mov %eax, %cr0
@@ -175,7 +178,11 @@ long_mode_cs_reloaded:
     div %rax
     call boot1_main
     cli
+    jmp .
     hlt
+
+boot1_start_str:
+    .asciz "Executing boot1!\r\n"
 
 a20_gate_enabled_str:
     .asciz "A20 gate is enabled\r\n"
@@ -196,7 +203,7 @@ mb_suffix_str:
     .asciz "MB\r\n"
 
 GDTR:
-    .word GDT_end - GDT - 1 #limit
+    .word GDT_end - GDT - 1  #limit
     .long GDT                #base
 GDT:
     .quad 0x0000000000000000  #null segment descriptor
@@ -206,7 +213,7 @@ GDT_end:
 
 GDTR64:
     .word GDT_end64 - GDT64 - 1 #limit
-    .quad GDT64                #base
+    .quad GDT64                 #base
 GDT64:
     .quad 0x0000000000000000  #null segment descriptor
     .quad 0x009F92000000FFFF  #data segment descriptor
