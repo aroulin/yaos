@@ -8,10 +8,10 @@ lib:
 	$(MAKE) -C lib
 
 qemu: hdd.img
-	qemu-system-x86_64 -hda hdd.img
+	qemu-system-x86_64 -drive file=hdd.img,format=raw
 
 dbg: hdd.img
-	qemu-system-x86_64 -hda hdd.img -s &
+	qemu-system-x86_64 -drive file=hdd.img,format=raw -s &
 
 disassemble:
 	objdump -m i8086 -b binary -D hdd.img

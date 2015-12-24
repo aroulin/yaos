@@ -903,7 +903,7 @@ parport1: enabled=1, file="parport.out"
 # Example for different drivers:
 #   sound: waveoutdrv=sdl, waveindrv=alsa, midioutdrv=dummy
 #=======================================================================
-sound: driver=default, waveout=/dev/dsp. wavein=, midiout=
+#sound: driver=default, waveout=/dev/dsp. wavein=, midiout=
 
 #=======================================================================
 # SPEAKER:
@@ -914,7 +914,7 @@ sound: driver=default, waveout=/dev/dsp. wavein=, midiout=
 # the Beep() function. The 'gui' mode forwards the beep to the related
 # gui methods (currently only used by the Carbon gui).
 #=======================================================================
-speaker: enabled=1, mode=sound
+#speaker: enabled=1, mode=sound
 
 #=======================================================================
 # SB16:
